@@ -11,6 +11,13 @@ script:
 
 after_success:
   - docker build -t nfuser/multi-client ./client
-  - docker build -t nfuser/multi-nging ./nginx
+  - docker build -t nfuser/multi-nginx ./nginx
   - docker build -t nfuser/multi-server ./server
   - docker build -t nfuser/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push nfuser/multi-client
+  - docker push nfuser/multi-nginx
+  - docker push nfuser/multi-server
+  - docker push nfuser/multi-worker
